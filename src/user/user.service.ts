@@ -18,7 +18,7 @@ export class UserService {
   private readonly logger = new Logger(UserService.name);
 
   async getAllUsers(): Promise<User[]> {
-    return await this.userModel.find().exec();
+    return await this.userModel.find().select('-password').exec();
   }
 
   async validateUser(email: string, password: string): Promise<Omit<User, 'password'> | null> {
