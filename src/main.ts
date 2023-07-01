@@ -21,7 +21,7 @@ async function bootstrap() {
     next();
   });
   app.useGlobalPipes(new ValidationPipe());
-  app.useStaticAssets(join(__dirname, '..', 'src/temp'), { prefix: '/temp' });
+  app.useStaticAssets(join(__dirname, '/temp'), { prefix: '/temp' });
 
   const config = new DocumentBuilder()
     .setTitle('TODO App APIs')
@@ -37,7 +37,7 @@ async function bootstrap() {
     },
   });
 
-  await app.listen(process.env.PORT || 3000);
+  await app.listen(process.env.PORT);
 }
 
 bootstrap();
