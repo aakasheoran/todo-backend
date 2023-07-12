@@ -49,6 +49,13 @@ export class CreateUserDTO {
   @Prop({ required: true })
   password: string;
 
+  @ApiProperty({ description: 'Confirm the same Password', example: 'abcd@123', required: true })
+  @IsString()
+  @IsNotEmpty()
+  @Length(8, 20)
+  @Matches(PASSWORD_REGEX, { message: 'Confirm Password must contain at least 1 uppercase, 1 lowercase, 1 number & 1 special character' })
+  confirmPassword: string;
+
   @ApiProperty({ description: 'Role of the user', example: Role.USER, enum: Role, required: false, default: Role.USER })
   @IsOptional()
   @IsEnum(Role)

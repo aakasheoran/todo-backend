@@ -7,6 +7,7 @@ import { LogInUserDTO } from 'src/user/dto/login-user.dto';
 import { ForgotPasswordDTO } from 'src/user/dto/forgot-password.dto';
 import { checkOtpDTO } from 'src/user/dto/otp-check.dto';
 import { ResetPasswordDTO } from 'src/user/dto/reset-password.dto';
+import { ChangePasswordDTO } from 'src/user/dto/change-password.dto';
 
 @ApiTags('Auth Controller')
 @Controller('api/v1/auth')
@@ -27,7 +28,13 @@ export class AuthController {
     return await this.authService.loginUser(logInDto);
   }
 
-  @ApiOperation({ summary: 'Forgot password, reset it' })
+  @ApiOperation({ summary: 'Change old password to a new password' })
+  @Post('change-password')
+  async changePassword(@Body() changePasswordDTO: ChangePasswordDTO): Promise<{ message: string }> {
+    return await this.authService.changePassword(changePasswordDTO);
+  }
+
+  @ApiOperation({ summary: 'Forgot password, send otp' })
   @Post('forgot-password')
   async forgotPassword(@Body() forgotPasswordDto: ForgotPasswordDTO): Promise<{ message: string }> {
     return await this.authService.forgotPassword(forgotPasswordDto);
