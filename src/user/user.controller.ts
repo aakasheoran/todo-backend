@@ -1,12 +1,14 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
+
 import { RolesGuard } from 'src/roles/roles.guard';
 import { UserService } from './user.service';
-import { CreateUserDTO } from './dto/create-user.dto';
 import { User } from './entity/create-user.entity';
 
 @ApiTags('User Controller')
 @Controller('api/v1/user')
+@UseGuards(AuthGuard())
 // @UseGuards(JwtAuthGuard, RolesGuard)
 export class UserController {
   constructor(
@@ -14,25 +16,9 @@ export class UserController {
   ) {}
 
   @Get()
-  @ApiOperation({ summary: 'Get all users' })
+  @ApiOperation({ summary: 'Get all registered users' })
   async getAllUsers(): Promise<User[]> {
     return await this.userService.getAllUsers();
-  }
-
-  @Post('signup')
-  @ApiOperation({ summary: 'Register a new user' })
-  async registerUser(@Body() body: CreateUserDTO): Promise<User> {
-    return await this.userService.createUser(body);
-  }
-
-  @Post('login')
-  async loginUser(@Body() body: { email: string; password: string }) {
-    const user = await this.userService.validateUser(body.email, body.password); 
-    if (user) {
-      const token = await this.userService.generateJwtToken(user);
-      return { token: token };
-    }
-    return { message: 'Invalid credentials' };
   }
 
   @Get('profile')
