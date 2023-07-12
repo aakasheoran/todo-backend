@@ -1,6 +1,7 @@
 import { Prop } from '@nestjs/mongoose';
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, Length, IsEmail, IsEnum, IsDateString, IsOptional } from 'class-validator';
+import { IsString, IsNotEmpty, Length, IsEmail, IsEnum, IsDateString, IsOptional, Matches } from 'class-validator';
+import { PASSWORD_REGEX } from 'src/configs/constants';
 import { Gender, Role } from 'src/configs/enums';
 
 export class CreateUserDTO {
@@ -44,6 +45,7 @@ export class CreateUserDTO {
   @IsString()
   @IsNotEmpty()
   @Length(8, 20)
+  @Matches(PASSWORD_REGEX, { message: 'Password must contain at least 1 uppercase, 1 lowercase, 1 number & 1 special character' })
   @Prop({ required: true })
   password: string;
 
